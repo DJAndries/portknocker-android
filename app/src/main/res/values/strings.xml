@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Port Knocker</string>
+
+    <string name="ports">Ports (comma-separated)</string>
+    <string name="onetime_ports">One time sequences (one per line, ports comma-separated)</string>
+    <string name="host">Host (IP or name)</string>
+    <string name="profile_name">Profile name</string>
+    <string name="knock_knock">Knock knock!</string>
+
+    <string name="bad_port">Bad port: %s</string>
+    <string name="no_ports_specified">No ports specified</string>
+    <string name="no_name_specified">No profile name specified</string>
+    <string name="no_host_specified">No host specified</string>
+    <string name="no_onetime_seqs">No more one time sequences left!</string>
+    <string name="open_sesame">Open sesame! Knocked ports: %s</string>
+    <string name="knocking">Knocking...</string>
+
+    <string name="quick_knock">Quick Knock</string>
+    <string name="profiles">Profiles</string>
+
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+
+    <string name="main_prefs">main_prefs</string>
+    <string name="profiles_key">profiles</string>
+
+    <string name="no_profiles_configured">No profiles configured.</string>
+
+    <string name="confirm">Confirm</string>
+    <string name="delete_prompt">Are you sure you wish to delete this profile?</string>
+    <string name="knock_prompt">Are you sure you wish to knock ports on this host?</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="use_onetime">Use one time sequences</string>
+
+</resources>
