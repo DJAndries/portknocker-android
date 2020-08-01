@@ -22,6 +22,7 @@ class AddProfileActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
+        supportActionBar?.setTitle(R.string.edit_profile)
 
         saveBtn.setOnClickListener { save() }
         onetimeSwitch.setOnClickListener { updateOneTime() }

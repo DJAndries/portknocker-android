@@ -10,7 +10,7 @@ class AlertHelper {
         fun showConfirmDialog(context: Context, bodyRes: Int, confirmFunc: () -> Unit) {
             val dialog = AlertDialog.Builder(context)
                 .setTitle(R.string.confirm)
-                .setMessage(R.string.delete_prompt)
+                .setMessage(bodyRes)
                 .setPositiveButton(R.string.confirm) { _: DialogInterface, _: Int ->
                     confirmFunc()
                 }

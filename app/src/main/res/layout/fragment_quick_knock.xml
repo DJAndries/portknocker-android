@@ -19,17 +19,17 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:background="@android:color/white"
-            app:boxBackgroundColor="@android:color/white"
-            android:hint="@string/host">
+            android:hint="@string/host"
+            app:boxBackgroundColor="@android:color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/hostTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="0dp"
-                android:paddingEnd="0dp"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
