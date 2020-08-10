@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
                 1 -> getString(R.string.profiles)
+                2 -> getString(R.string.history)
                 else -> getString(R.string.quick_knock)
             }
         }.attach()
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         this.menu = menu
         menuInflater.inflate(R.menu.main, menu)
-        pageChangeCallback.onPageSelected(0)
+        pageChangeCallback.onPageSelected(viewPager.currentItem)
         return true
     }
 
@@ -75,11 +76,12 @@ class MainActivity : AppCompatActivity() {
 
     inner class MainCollectionAdapter : FragmentStateAdapter(this) {
 
-        override fun getItemCount(): Int = 2
+        override fun getItemCount(): Int = 3
 
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 1 -> profileFragment
+                2 -> HistoryFragment()
                 else -> QuickKnockFragment()
             }
         }

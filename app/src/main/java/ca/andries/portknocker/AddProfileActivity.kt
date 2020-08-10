@@ -26,6 +26,7 @@ class AddProfileActivity : AppCompatActivity() {
 
         saveBtn.setOnClickListener { save() }
         onetimeSwitch.setOnClickListener { updateOneTime() }
+        portCheckSwitch.setOnClickListener { updatePortCheckInputs() }
     }
 
     private fun loadExistingProfile() {
@@ -34,9 +35,21 @@ class AddProfileActivity : AppCompatActivity() {
         nameTxt.setText(existingProfile?.name)
         portsTxt.setText(existingProfile?.ports?.joinToString(","))
         hostTxt.setText(existingProfile?.host)
+
         oneTimePortsTxt.setText(existingProfile?.oneTimeSequences?.joinToString("\n") { v -> v.joinToString(",") })
         onetimeSwitch.isChecked = existingProfile?.oneTimeEnabled ?: false
+
+        portCheckSwitch.isChecked = existingProfile?.portCheckEnabled ?: false
+        portToCheckTxt.setText(existingProfile?.portToCheck.toString())
+        portIntervalTxt.setText(existingProfile?.portCheckWaitInterval.toString())
+
+        if (!portCheckSwitch.isChecked) {
+            portToCheckTxt.setText("")
+            portIntervalTxt.setText(resources.getInteger(R.integer.default_check_port_wait_interval).toString())
+        }
+
         updateOneTime()
+        updatePortCheckInputs()
     }
 
     private fun updateOneTime() {
@@ -49,8 +62,12 @@ class AddProfileActivity : AppCompatActivity() {
         }
     }
 
+    private fun updatePortCheckInputs() {
+        portCheckCtr.visibility = if (portCheckSwitch.isChecked) VISIBLE else GONE
+    }
+
     private fun clearErrors() {
-        listOf(nameTxtLayout, hostTxtLayout, oneTimePortsTxtLayout, portsTxtLayout).map { v ->
+        listOf(nameTxtLayout, hostTxtLayout, oneTimePortsTxtLayout, portsTxtLayout, portToCheckLayout, portIntervalTxtLayout).map { v ->
             v.error = null
             v.isErrorEnabled = false
         }
@@ -59,9 +76,10 @@ class AddProfileActivity : AppCompatActivity() {
     private fun validateBlanks() : Boolean {
         var isError = false
 
-        val editLayouts = listOf(nameTxtLayout, hostTxtLayout)
-        val editErrors = listOf(R.string.no_name_specified, R.string.no_host_specified)
-        listOf(nameTxt, hostTxt).mapIndexed { i, v ->
+        val editLayouts = listOf(nameTxtLayout, hostTxtLayout, portIntervalTxtLayout, portToCheckLayout)
+        val editErrors = listOf(R.string.no_name_specified, R.string.no_host_specified,
+            R.string.no_wait_interval_specified, R.string.no_check_port_specified)
+        listOf(nameTxt, hostTxt, portIntervalTxt, portToCheckTxt).mapIndexed { i, v ->
             if (v.text.toString().isEmpty()) {
                 editLayouts[i].isErrorEnabled = true
                 editLayouts[i].error = getString(editErrors[i])
@@ -72,11 +90,39 @@ class AddProfileActivity : AppCompatActivity() {
         return !isError
     }
 
+    private fun validatePortCheckInputs() : Boolean {
+        if (!portCheckSwitch.isChecked) return true
+
+        var isError = false
+
+        val portToCheck = try { Integer.parseInt(portToCheckTxt.text.toString()) } catch (e: Exception) { 0 }
+        val portInterval = try { Integer.parseInt(portIntervalTxt.text.toString()) } catch (e: Exception) { 0 }
+
+        if (portToCheck < 1 || portToCheck > 65535) {
+            portToCheckLayout.error = getString(R.string.bad_port, portToCheckTxt.text.toString())
+            portToCheckLayout.isErrorEnabled = true
+            isError = true
+        }
+
+        if (portInterval < 1) {
+            portIntervalTxtLayout.error = getString(R.string.bad_interval)
+            portIntervalTxtLayout.isErrorEnabled = true
+            isError = true
+        }
+
+        return !isError
+    }
+
     private fun save() {
         clearErrors()
         if (!validateBlanks()) return
+        if (!validatePortCheckInputs()) return
 
-        val profile = Profile(name = nameTxt.text.toString(), host = hostTxt.text.toString(), oneTimeEnabled = onetimeSwitch.isChecked)
+        val profile = Profile(name = nameTxt.text.toString(), host = hostTxt.text.toString(),
+            portToCheck = if (portCheckSwitch.isChecked) Integer.parseInt(portToCheckTxt.text.toString()) else 0,
+            portCheckWaitInterval = if (portCheckSwitch.isChecked) Integer.parseInt(portIntervalTxt.text.toString())
+                else resources.getInteger(R.integer.default_check_port_wait_interval),
+            oneTimeEnabled = onetimeSwitch.isChecked, portCheckEnabled = portCheckSwitch.isChecked)
 
         if (existingProfile != null) {
             profile.id = existingProfile?.id

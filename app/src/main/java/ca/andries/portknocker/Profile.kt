@@ -9,15 +9,23 @@ class Profile (
     var host: String,
     var ports: List<Int> = listOf(),
     var oneTimeEnabled: Boolean = false,
-    var oneTimeSequences: ArrayList<List<Int>> = arrayListOf()
+    var oneTimeSequences: ArrayList<List<Int>> = arrayListOf(),
+
+    var portCheckEnabled: Boolean = false,
+    var portToCheck: Int = 0,
+    var portCheckWaitInterval: Int
 ) : Serializable {
     fun popNextSequence(context: Context) : List<Int> {
+        val result = peekNextSequence(context)
+        oneTimeSequences.removeAt(0)
+        return result
+    }
+
+    fun peekNextSequence(context: Context) : List<Int> {
         if (oneTimeSequences.isEmpty()) {
             throw PortKnockerException(context.getString(R.string.no_onetime_seqs))
         }
-        val seq = oneTimeSequences[0]
-        oneTimeSequences.removeAt(0)
-        return seq
+        return oneTimeSequences[0]
     }
 
     fun peekNextSequenceText() : String {

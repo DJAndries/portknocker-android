@@ -10,8 +10,6 @@ import kotlinx.android.synthetic.main.activity_add_profile.*
 import kotlinx.android.synthetic.main.fragment_quick_knock.*
 import kotlinx.android.synthetic.main.fragment_quick_knock.hostTxt
 import kotlinx.android.synthetic.main.fragment_quick_knock.hostTxtLayout
-import kotlinx.android.synthetic.main.fragment_quick_knock.portsTxt
-import kotlinx.android.synthetic.main.fragment_quick_knock.portsTxtLayout
 import kotlinx.android.synthetic.main.fragment_quick_knock.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

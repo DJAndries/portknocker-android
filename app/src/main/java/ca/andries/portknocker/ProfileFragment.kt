@@ -69,9 +69,7 @@ class ProfileFragment : Fragment() {
     private fun startKnock(profile: Profile) {
         val ports = try {
             if (profile.oneTimeEnabled) {
-                val seq = profile.popNextSequence(requireContext())
-                ProfileManager.saveProfile(profile)
-                seq
+                profile.peekNextSequence(requireContext())
             } else {
                 profile.ports
             }
@@ -83,8 +81,21 @@ class ProfileFragment : Fragment() {
         Toast.makeText(context, getString(R.string.knocking), Toast.LENGTH_SHORT).show()
         GlobalScope.launch {
             KnockUtil.knockPorts(profile.host, ports)
+
+            var isSuccess = true
+            if (profile.portCheckEnabled) {
+                Thread.sleep(profile.portCheckWaitInterval.toLong())
+                isSuccess = KnockUtil.knockPort(profile.host, profile.portToCheck)
+            }
+
+            if (isSuccess && profile.oneTimeEnabled) {
+                profile.popNextSequence(requireContext())
+                ProfileManager.saveProfile(profile)
+            }
+
             activity?.runOnUiThread {
-                Toast.makeText(context, getString(R.string.open_sesame, ports.joinToString()), Toast.LENGTH_LONG).show()
+                val msg = if (isSuccess) R.string.open_sesame else R.string.failed_knock
+                Toast.makeText(context, getString(msg, ports.joinToString()), Toast.LENGTH_LONG).show()
                 if (profile.oneTimeEnabled) updateData()
             }
         }

@@ -5,18 +5,26 @@
     <string name="onetime_ports">One time sequences (one per line, ports comma-separated)</string>
     <string name="host">Host (IP or name)</string>
     <string name="profile_name">Profile name</string>
+    <string name="check_ports">Check open port after knock</string>
+    <string name="port_to_check">Port to check after knock</string>
+    <string name="check_wait_interval">Port check wait interval (ms)</string>
     <string name="knock_knock">Knock knock!</string>
 
     <string name="bad_port">Bad port: %s</string>
+    <string name="bad_interval">Bad interval</string>
     <string name="no_ports_specified">No ports specified</string>
     <string name="no_name_specified">No profile name specified</string>
     <string name="no_host_specified">No host specified</string>
+    <string name="no_wait_interval_specified">No wait interval specified</string>
+    <string name="no_check_port_specified">No port specified</string>
     <string name="no_onetime_seqs">No more one time sequences left!</string>
     <string name="open_sesame">Open sesame! Knocked ports: %s</string>
+    <string name="failed_knock">Failed knock! Knocked ports: %s</string>
     <string name="knocking">Knocking...</string>
 
     <string name="quick_knock">Quick Knock</string>
     <string name="profiles">Profiles</string>
+    <string name="history">History</string>
 
     <string name="edit">Edit</string>
     <string name="edit_profile">Edit profile</string>

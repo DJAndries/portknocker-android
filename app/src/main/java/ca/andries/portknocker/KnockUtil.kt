@@ -6,12 +6,13 @@ import java.net.Socket
 
 class KnockUtil {
     companion object {
-        private fun knockPort(host : String, port : Int) {
-            try {
+        fun knockPort(host : String, port : Int) : Boolean {
+            return try {
                 val sock = Socket()
                 sock.connect(InetSocketAddress(host, port), 1000)
+                true
             } catch (e : Exception) {
-
+                false
             }
         }
 
@@ -20,6 +21,5 @@ class KnockUtil {
                 knockPort(host, port)
             }
         }
-
     }
 }
