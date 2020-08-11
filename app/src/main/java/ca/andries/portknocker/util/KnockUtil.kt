@@ -1,6 +1,8 @@
-package ca.andries.portknocker
+package ca.andries.portknocker.util
 
 import android.content.Context
+import ca.andries.portknocker.models.HistoryItem
+import ca.andries.portknocker.data.StoredDataManager
 import java.net.InetSocketAddress
 import java.net.Socket
 import java.util.*
@@ -19,9 +21,18 @@ class KnockUtil {
 
         fun knockPorts(context: Context, host : String, ports : List<Int>) {
             for (port in ports) {
-                knockPort(host, port)
+                knockPort(
+                    host,
+                    port
+                )
             }
-            StoredDataManager.addHistory(context, HistoryItem(host, ports.joinToString(", "), Date()))
+            StoredDataManager.addHistory(context,
+                HistoryItem(
+                    host,
+                    ports.joinToString(", "),
+                    Date()
+                )
+            )
         }
     }
 }

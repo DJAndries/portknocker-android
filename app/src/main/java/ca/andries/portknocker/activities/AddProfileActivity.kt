@@ -1,10 +1,14 @@
-package ca.andries.portknocker
+package ca.andries.portknocker.activities
 
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import ca.andries.portknocker.*
+import ca.andries.portknocker.data.StoredDataManager
+import ca.andries.portknocker.models.Profile
+import ca.andries.portknocker.util.PortParseUtil
 import kotlinx.android.synthetic.main.activity_add_profile.*
 import kotlinx.android.synthetic.main.activity_add_profile.nameTxtLayout
 
@@ -76,8 +80,12 @@ class AddProfileActivity : AppCompatActivity() {
         var isError = false
 
         val editLayouts = listOf(nameTxtLayout, hostTxtLayout, portIntervalTxtLayout, portToCheckLayout)
-        val editErrors = listOf(R.string.no_name_specified, R.string.no_host_specified,
-            R.string.no_wait_interval_specified, R.string.no_check_port_specified)
+        val editErrors = listOf(
+            R.string.no_name_specified,
+            R.string.no_host_specified,
+            R.string.no_wait_interval_specified,
+            R.string.no_check_port_specified
+        )
         val portCheckInputStartIndex = 2
 
         listOf(nameTxt, hostTxt, portIntervalTxt, portToCheckTxt).mapIndexed { i, v ->
@@ -122,11 +130,13 @@ class AddProfileActivity : AppCompatActivity() {
         if (!validateBlanks()) return
         if (!validatePortCheckInputs()) return
 
-        val profile = Profile(name = nameTxt.text.toString(), host = hostTxt.text.toString(),
+        val profile = Profile(
+            name = nameTxt.text.toString(), host = hostTxt.text.toString(),
             portToCheck = if (portCheckSwitch.isChecked) Integer.parseInt(portToCheckTxt.text.toString()) else 0,
             portCheckWaitInterval = if (portCheckSwitch.isChecked) Integer.parseInt(portIntervalTxt.text.toString())
-                else resources.getInteger(R.integer.default_check_port_wait_interval),
-            oneTimeEnabled = onetimeSwitch.isChecked, portCheckEnabled = portCheckSwitch.isChecked)
+            else resources.getInteger(R.integer.default_check_port_wait_interval),
+            oneTimeEnabled = onetimeSwitch.isChecked, portCheckEnabled = portCheckSwitch.isChecked
+        )
 
         if (existingProfile != null) {
             profile.id = existingProfile?.id
@@ -134,12 +144,17 @@ class AddProfileActivity : AppCompatActivity() {
 
         try {
             if (!onetimeSwitch.isChecked) {
-                profile.ports = PortParseUtil.validateAndParsePorts(this, portsTxt.text.toString())
+                profile.ports =
+                    PortParseUtil.validateAndParsePorts(
+                        this,
+                        portsTxt.text.toString()
+                    )
             } else {
-                profile.oneTimeSequences = PortParseUtil.validateAndParseOneTimeSequences(
-                    this,
-                    oneTimePortsTxt.text.toString()
-                )
+                profile.oneTimeSequences =
+                    PortParseUtil.validateAndParseOneTimeSequences(
+                        this,
+                        oneTimePortsTxt.text.toString()
+                    )
             }
         } catch (e : PortKnockerException) {
             val controlTxtLayout = if (onetimeSwitch.isChecked) oneTimePortsTxtLayout else portsTxtLayout
@@ -148,7 +163,10 @@ class AddProfileActivity : AppCompatActivity() {
             return
         }
 
-        StoredDataManager.saveProfile(this, profile)
+        StoredDataManager.saveProfile(
+            this,
+            profile
+        )
 
         setResult(Activity.RESULT_OK)
         finish()

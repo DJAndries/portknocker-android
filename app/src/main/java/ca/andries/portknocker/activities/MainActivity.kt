@@ -1,4 +1,4 @@
-package ca.andries.portknocker
+package ca.andries.portknocker.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -6,10 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import ca.andries.portknocker.fragments.HistoryFragment
+import ca.andries.portknocker.fragments.ProfileFragment
+import ca.andries.portknocker.fragments.QuickKnockFragment
+import ca.andries.portknocker.R
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -17,9 +20,17 @@ class MainActivity : AppCompatActivity() {
 
     var menu : Menu? = null
 
-    val quickKnockFragment = QuickKnockFragment { historyFragment.updateData(this) }
+    val quickKnockFragment =
+        QuickKnockFragment {
+            historyFragment.updateData(this)
+        }
 
-    val profileFragment = ProfileFragment { historyFragment.updateData(this) }
+    val profileFragment =
+        ProfileFragment {
+            historyFragment.updateData(
+                this
+            )
+        }
 
     val historyFragment = HistoryFragment()
 

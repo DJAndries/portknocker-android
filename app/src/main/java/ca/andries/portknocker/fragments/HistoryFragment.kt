@@ -1,4 +1,4 @@
-package ca.andries.portknocker
+package ca.andries.portknocker.fragments
 
 import android.content.Context
 import android.graphics.drawable.ClipDrawable
@@ -6,14 +6,16 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
+import ca.andries.portknocker.*
+import ca.andries.portknocker.data.StoredDataManager
+import ca.andries.portknocker.adapters.HistoryItemRecyclerViewAdapter
+import ca.andries.portknocker.models.HistoryItem
+import ca.andries.portknocker.util.AlertHelper
 import kotlinx.android.synthetic.main.fragment_history_list.*
-import kotlinx.android.synthetic.main.fragment_history_list.view.*
-import kotlinx.android.synthetic.main.fragment_profile_list.view.*
 import kotlinx.android.synthetic.main.fragment_profile_list.view.emptyView
 import kotlinx.android.synthetic.main.fragment_profile_list.view.list
 
@@ -49,7 +51,10 @@ class HistoryFragment : Fragment() {
                 columnCount <= 1 -> LinearLayoutManager(context)
                 else -> GridLayoutManager(context, columnCount)
             }
-            adapter = HistoryItemRecyclerViewAdapter(historyList)
+            adapter =
+                HistoryItemRecyclerViewAdapter(
+                    historyList
+                )
             addItemDecoration(DividerItemDecoration(context, ClipDrawable.HORIZONTAL))
         }
         return view
@@ -57,7 +62,11 @@ class HistoryFragment : Fragment() {
 
     fun updateData(context: Context) {
         historyList.clear()
-        historyList.addAll(StoredDataManager.listHistory(context))
+        historyList.addAll(
+            StoredDataManager.listHistory(
+                context
+            )
+        )
         if (this.view != null) {
             updateVisibility()
             list.adapter?.notifyDataSetChanged()
@@ -65,8 +74,13 @@ class HistoryFragment : Fragment() {
     }
 
     fun deleteHistory() {
-        AlertHelper.showConfirmDialog(requireContext(), R.string.clear_history_prompt) {
-            StoredDataManager.clearHistory(requireContext())
+        AlertHelper.showConfirmDialog(
+            requireContext(),
+            R.string.clear_history_prompt
+        ) {
+            StoredDataManager.clearHistory(
+                requireContext()
+            )
             updateData(requireContext())
         }
     }

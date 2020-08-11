@@ -22,6 +22,6 @@
         android:layout_height="match_parent"
         android:longClickable="true"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".ProfileFragment"
+        tools:context=".fragments.ProfileFragment"
         tools:listitem="@layout/fragment_profile" />
 </FrameLayout>

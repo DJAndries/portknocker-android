@@ -1,6 +1,8 @@
-package ca.andries.portknocker
+package ca.andries.portknocker.models
 
 import android.content.Context
+import ca.andries.portknocker.PortKnockerException
+import ca.andries.portknocker.R
 import java.io.Serializable
 
 class Profile (
@@ -23,7 +25,11 @@ class Profile (
 
     fun peekNextSequence(context: Context) : List<Int> {
         if (oneTimeSequences.isEmpty()) {
-            throw PortKnockerException(context.getString(R.string.no_onetime_seqs))
+            throw PortKnockerException(
+                context.getString(
+                    R.string.no_onetime_seqs
+                )
+            )
         }
         return oneTimeSequences[0]
     }

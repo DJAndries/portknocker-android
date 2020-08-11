@@ -1,4 +1,4 @@
-package ca.andries.portknocker
+package ca.andries.portknocker.fragments
 
 import android.content.Intent
 import android.graphics.drawable.ClipDrawable.HORIZONTAL
@@ -15,6 +15,13 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
+import ca.andries.portknocker.*
+import ca.andries.portknocker.activities.AddProfileActivity
+import ca.andries.portknocker.data.StoredDataManager
+import ca.andries.portknocker.adapters.ProfileRecyclerViewAdapter
+import ca.andries.portknocker.models.Profile
+import ca.andries.portknocker.util.AlertHelper
+import ca.andries.portknocker.util.KnockUtil
 import kotlinx.android.synthetic.main.fragment_profile_list.*
 import kotlinx.android.synthetic.main.fragment_profile_list.view.*
 import kotlinx.coroutines.GlobalScope
@@ -43,7 +50,11 @@ class ProfileFragment(val onKnock: () -> Unit) : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile_list, container, false)
 
-        profiles.addAll(StoredDataManager.listProfiles(requireContext()))
+        profiles.addAll(
+            StoredDataManager.listProfiles(
+                requireContext()
+            )
+        )
         updateVisibility(view)
         // Set the adapter
         val recyclerView = view.list
@@ -53,7 +64,12 @@ class ProfileFragment(val onKnock: () -> Unit) : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = ProfileRecyclerViewAdapter(profiles) { i -> promptKnock(profiles[i]) }
+                adapter =
+                    ProfileRecyclerViewAdapter(
+                        profiles
+                    ) { i ->
+                        promptKnock(profiles[i])
+                    }
                 addItemDecoration(DividerItemDecoration(context, HORIZONTAL))
                 registerForContextMenu(view)
             }
@@ -62,7 +78,10 @@ class ProfileFragment(val onKnock: () -> Unit) : Fragment() {
     }
 
     private fun promptKnock(profile: Profile) {
-        AlertHelper.showConfirmDialog(requireContext(), R.string.knock_prompt) { startKnock(profile) }
+        AlertHelper.showConfirmDialog(
+            requireContext(),
+            R.string.knock_prompt
+        ) { startKnock(profile) }
     }
 
     private fun startKnock(profile: Profile) {
@@ -79,17 +98,27 @@ class ProfileFragment(val onKnock: () -> Unit) : Fragment() {
 
         Toast.makeText(context, getString(R.string.knocking), Toast.LENGTH_SHORT).show()
         GlobalScope.launch {
-            KnockUtil.knockPorts(requireContext(), profile.host, ports)
+            KnockUtil.knockPorts(
+                requireContext(),
+                profile.host,
+                ports
+            )
 
             var isSuccess = true
             if (profile.portCheckEnabled) {
                 Thread.sleep(profile.portCheckWaitInterval.toLong())
-                isSuccess = KnockUtil.knockPort(profile.host, profile.portToCheck)
+                isSuccess = KnockUtil.knockPort(
+                    profile.host,
+                    profile.portToCheck
+                )
             }
 
             if (isSuccess && profile.oneTimeEnabled) {
                 profile.popNextSequence(requireContext())
-                StoredDataManager.saveProfile(requireContext(), profile)
+                StoredDataManager.saveProfile(
+                    requireContext(),
+                    profile
+                )
             }
 
             activity?.runOnUiThread {
@@ -103,7 +132,11 @@ class ProfileFragment(val onKnock: () -> Unit) : Fragment() {
 
     fun updateData() {
         profiles.clear()
-        profiles.addAll(StoredDataManager.listProfiles(requireContext()))
+        profiles.addAll(
+            StoredDataManager.listProfiles(
+                requireContext()
+            )
+        )
         list.adapter?.notifyDataSetChanged()
         updateVisibility()
     }
@@ -139,8 +172,14 @@ class ProfileFragment(val onKnock: () -> Unit) : Fragment() {
     }
 
     private fun deleteProfile(index: Int) {
-        AlertHelper.showConfirmDialog(requireContext(), R.string.delete_prompt) {
-            StoredDataManager.deleteProfile(requireContext(), index)
+        AlertHelper.showConfirmDialog(
+            requireContext(),
+            R.string.delete_prompt
+        ) {
+            StoredDataManager.deleteProfile(
+                requireContext(),
+                index
+            )
             updateData()
         }
     }

@@ -1,4 +1,4 @@
-package ca.andries.portknocker
+package ca.andries.portknocker.models
 
 import java.util.*
 

@@ -1,9 +1,10 @@
-package ca.andries.portknocker
+package ca.andries.portknocker.adapters
 
 import android.view.*
-import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.TextView
+import ca.andries.portknocker.models.Profile
+import ca.andries.portknocker.R
 
 class ProfileRecyclerViewAdapter(
     private val values: List<Profile>,
@@ -42,8 +43,14 @@ class ProfileRecyclerViewAdapter(
         }
 
         override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
-            menu.add(index, EDIT, 0, v.context.getString(R.string.edit))
-            menu.add(index, DELETE, 0, v.context.getString(R.string.delete))
+            menu.add(index,
+                EDIT, 0, v.context.getString(
+                    R.string.edit
+                ))
+            menu.add(index,
+                DELETE, 0, v.context.getString(
+                    R.string.delete
+                ))
         }
 
         override fun toString(): String {

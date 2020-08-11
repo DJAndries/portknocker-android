@@ -1,10 +1,12 @@
-package ca.andries.portknocker
+package ca.andries.portknocker.adapters
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import ca.andries.portknocker.models.HistoryItem
+import ca.andries.portknocker.R
 import java.text.DateFormat
 
 class HistoryItemRecyclerViewAdapter(
