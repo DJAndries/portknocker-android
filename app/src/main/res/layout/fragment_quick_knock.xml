@@ -33,7 +33,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/portToCheckLayout"
+            android:id="@+id/portsTxtLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
@@ -41,7 +41,7 @@
             android:hint="@string/ports">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/portToCheckTxt"
+                android:id="@+id/portsTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="0dp"

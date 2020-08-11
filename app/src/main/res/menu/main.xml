@@ -3,6 +3,10 @@
 
 
     <item
+        android:id="@+id/deleteBtn"
+        android:icon="@drawable/ic_close"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/addBtn"
         android:icon="@drawable/ic_add"
         android:title="Add"

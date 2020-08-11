@@ -1,5 +1,7 @@
 package ca.andries.portknocker
 
+import android.content.Context
+import android.graphics.drawable.ClipDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -8,7 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ca.andries.portknocker.dummy.DummyContent
+import androidx.recyclerview.widget.DividerItemDecoration
+import kotlinx.android.synthetic.main.fragment_history_list.*
+import kotlinx.android.synthetic.main.fragment_history_list.view.*
+import kotlinx.android.synthetic.main.fragment_profile_list.view.*
+import kotlinx.android.synthetic.main.fragment_profile_list.view.emptyView
+import kotlinx.android.synthetic.main.fragment_profile_list.view.list
 
 /**
  * A fragment representing a list of Items.
@@ -16,6 +23,8 @@ import ca.andries.portknocker.dummy.DummyContent
 class HistoryFragment : Fragment() {
 
     private var columnCount = 1
+
+    private val historyList : ArrayList<HistoryItem> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,31 +40,50 @@ class HistoryFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_history_list, container, false)
 
+        updateData(requireContext())
+        updateVisibility(view)
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = HistoryItemRecyclerViewAdapter(DummyContent.ITEMS)
+        val recyclerView = view.list
+        with(recyclerView) {
+            layoutManager = when {
+                columnCount <= 1 -> LinearLayoutManager(context)
+                else -> GridLayoutManager(context, columnCount)
             }
+            adapter = HistoryItemRecyclerViewAdapter(historyList)
+            addItemDecoration(DividerItemDecoration(context, ClipDrawable.HORIZONTAL))
         }
         return view
     }
 
+    fun updateData(context: Context) {
+        historyList.clear()
+        historyList.addAll(StoredDataManager.listHistory(context))
+        if (this.view != null) {
+            updateVisibility()
+            list.adapter?.notifyDataSetChanged()
+        }
+    }
+
+    fun deleteHistory() {
+        AlertHelper.showConfirmDialog(requireContext(), R.string.clear_history_prompt) {
+            StoredDataManager.clearHistory(requireContext())
+            updateData(requireContext())
+        }
+    }
+
+    private fun updateVisibility(view : View = this.requireView()) {
+        if (historyList.isEmpty()) {
+            view.list.visibility = View.GONE
+            view.emptyView.visibility = View.VISIBLE
+        } else {
+            view.list.visibility = View.VISIBLE
+            view.emptyView.visibility = View.GONE
+            view.invalidate()
+        }
+    }
+
     companion object {
 
-        // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            HistoryFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
     }
 }

@@ -5,15 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import java.text.DateFormat
 
-import ca.andries.portknocker.dummy.DummyContent.DummyItem
-
-/**
- * [RecyclerView.Adapter] that can display a [DummyItem].
- * TODO: Replace the implementation with code for your data type.
- */
 class HistoryItemRecyclerViewAdapter(
-    private val values: List<DummyItem>
+    private val values: List<HistoryItem>
 ) : RecyclerView.Adapter<HistoryItemRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,18 +19,20 @@ class HistoryItemRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.id
-        holder.contentView.text = item.content
+        holder.hostTxt.text = item.host
+        holder.portTxt.text = item.ports
+        holder.dateTxt.text = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(item.date)
     }
 
     override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val idView: TextView = view.findViewById(R.id.item_number)
-        val contentView: TextView = view.findViewById(R.id.content)
+        val hostTxt: TextView = view.findViewById(R.id.hostTxt)
+        val portTxt: TextView = view.findViewById(R.id.portTxt)
+        val dateTxt: TextView = view.findViewById(R.id.dateTxt)
 
         override fun toString(): String {
-            return super.toString() + " '" + contentView.text + "'"
+            return super.toString() + " '" + hostTxt.text + ":" + portTxt.text + "'"
         }
     }
 }

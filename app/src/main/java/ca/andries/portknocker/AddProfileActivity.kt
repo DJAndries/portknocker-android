@@ -7,7 +7,6 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import kotlinx.android.synthetic.main.activity_add_profile.*
 import kotlinx.android.synthetic.main.activity_add_profile.nameTxtLayout
-import kotlinx.android.synthetic.main.fragment_profile.*
 
 class AddProfileActivity : AppCompatActivity() {
 
@@ -79,11 +78,16 @@ class AddProfileActivity : AppCompatActivity() {
         val editLayouts = listOf(nameTxtLayout, hostTxtLayout, portIntervalTxtLayout, portToCheckLayout)
         val editErrors = listOf(R.string.no_name_specified, R.string.no_host_specified,
             R.string.no_wait_interval_specified, R.string.no_check_port_specified)
+        val portCheckInputStartIndex = 2
+
         listOf(nameTxt, hostTxt, portIntervalTxt, portToCheckTxt).mapIndexed { i, v ->
+
             if (v.text.toString().isEmpty()) {
-                editLayouts[i].isErrorEnabled = true
-                editLayouts[i].error = getString(editErrors[i])
-                isError = true
+                if (!(i >= portCheckInputStartIndex && !portCheckSwitch.isChecked)) {
+                    editLayouts[i].isErrorEnabled = true
+                    editLayouts[i].error = getString(editErrors[i])
+                    isError = true
+                }
             }
         }
 
@@ -144,7 +148,7 @@ class AddProfileActivity : AppCompatActivity() {
             return
         }
 
-        ProfileManager.saveProfile(profile)
+        StoredDataManager.saveProfile(this, profile)
 
         setResult(Activity.RESULT_OK)
         finish()

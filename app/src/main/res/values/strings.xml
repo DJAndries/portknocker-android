@@ -33,12 +33,15 @@
 
     <string name="main_prefs">main_prefs</string>
     <string name="profiles_key">profiles</string>
+    <string name="history_key">history</string>
 
     <string name="no_profiles_configured">No profiles configured.</string>
+    <string name="no_history">No history.</string>
 
     <string name="confirm">Confirm</string>
     <string name="delete_prompt">Are you sure you wish to delete this profile?</string>
     <string name="knock_prompt">Are you sure you wish to knock ports on this host?</string>
+    <string name="clear_history_prompt">Are you sure you wish to clear the history?</string>
     <string name="cancel">Cancel</string>
 
     <string name="use_onetime">Use one time sequences</string>

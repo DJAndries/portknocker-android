@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_add_profile.*
 import kotlinx.android.synthetic.main.fragment_quick_knock.*
 import kotlinx.android.synthetic.main.fragment_quick_knock.hostTxt
 import kotlinx.android.synthetic.main.fragment_quick_knock.hostTxtLayout
@@ -14,7 +13,7 @@ import kotlinx.android.synthetic.main.fragment_quick_knock.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class QuickKnockFragment : Fragment() {
+class QuickKnockFragment(val onKnock : () -> Unit) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +59,7 @@ class QuickKnockFragment : Fragment() {
             setButtonEnable(false)
         }
 
-        KnockUtil.knockPorts(hostTxt.text.toString(),
+        KnockUtil.knockPorts(requireContext(), hostTxt.text.toString(),
             PortParseUtil.validateAndParsePorts(requireContext(), portsTxt.text.toString()))
 
         activity?.runOnUiThread {
@@ -68,6 +67,7 @@ class QuickKnockFragment : Fragment() {
             hostTxt.setText("")
             portsTxt.setText("")
             setButtonEnable(true)
+            onKnock()
         }
     }
 }

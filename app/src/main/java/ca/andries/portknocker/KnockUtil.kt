@@ -3,6 +3,7 @@ package ca.andries.portknocker
 import android.content.Context
 import java.net.InetSocketAddress
 import java.net.Socket
+import java.util.*
 
 class KnockUtil {
     companion object {
@@ -16,10 +17,11 @@ class KnockUtil {
             }
         }
 
-        fun knockPorts(host : String, ports : List<Int>) {
+        fun knockPorts(context: Context, host : String, ports : List<Int>) {
             for (port in ports) {
                 knockPort(host, port)
             }
+            StoredDataManager.addHistory(context, HistoryItem(host, ports.joinToString(", "), Date()))
         }
     }
 }

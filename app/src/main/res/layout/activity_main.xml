@@ -20,7 +20,7 @@
         app:tabGravity="fill"
         app:tabIndicatorColor="@color/colorAccent"
         app:tabMaxWidth="0dp"
-        app:tabMode="auto"
+        app:tabMode="fixed"
         app:tabSelectedTextColor="@android:color/black"
         app:tabTextColor="@android:color/secondary_text_light" />
 
